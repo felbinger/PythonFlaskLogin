@@ -45,7 +45,7 @@ class User(db.Model):
         return check_password_hash(self._password, password)
 
     def get_totp_uri(self) -> str:
-        return f'otpauth://totp/FlaskBasic:{self.username}?secret={self.totp_secret}&issuer=FlaskBasic'
+        return f'otpauth://totp/PythonFlaskLogin:{self.username}?secret={self.totp_secret}&issuer=PythonFlaskLogin'
 
     def verify_totp(self, token: str) -> bool:
         """
