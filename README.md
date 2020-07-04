@@ -24,8 +24,14 @@ This is a flask api example login project which supports multi factor authentica
     sudo curl -L "https://github.com/docker/compose/releases/download/1.26.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
     ```
-   
-3. Start the services
+
+3. Build the docker image
+   ```bash
+   docker build -t pythonflasklogin:build -f Dockerfile.build .
+   docker build -t pythonflasklogin:latest --no-cache --build-arg "BASE_IMG=pythonflasklogin:build" .
+   ```
+
+4. Start the services
    ```bash
    # start the database and the redis server
    sudo docker-compose up -d mariadb redis
