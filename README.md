@@ -37,5 +37,3 @@ This is a flask api example login project which supports multi factor authentica
    ```
  
 5. Start the application (`sudo docker-compose up -d app`)
-
-### Development Environment
