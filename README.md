@@ -52,3 +52,8 @@ This is a flask api example login project which supports multi factor authentica
    # show the status of the docker container
    sudo docker-compose ps
    ```
+   
+## Examples
+![login page](../media/login.png?raw=true)
+![setup page](../media/setup.png?raw=true)
+![profile page](../media/profile.png?raw=true)
