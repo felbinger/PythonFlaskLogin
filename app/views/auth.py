@@ -1,21 +1,13 @@
 from flask import (
     Blueprint, render_template,
-    request, session, redirect,
-    url_for, flash
+    request, session,
+    url_for
 )
-from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField
-from wtforms.validators import InputRequired
 import requests
 
 from .utils import require_login, require_logout
 
 auth = Blueprint(__name__, 'auth')
-
-
-class PasswordResetForm(FlaskForm):
-    email = StringField('E-Mail', validators=[InputRequired()])
-    recaptcha = RecaptchaField()
 
 
 @auth.route('/login', methods=['GET', 'POST'])
