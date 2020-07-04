@@ -42,66 +42,62 @@
                                     <div id="statusMsg" class="alert" style="display: none;"></div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <div class="form-label-group">
-                                                                    <input class="form-control" id="username" placeholder="Username" type="text" value="{{ data['username'] }}" disabled>
-                                                                    <label for="username">Username</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="form-label-group">
-                                                                    <input class="form-control" id="email"placeholder="E-Mail Address" type="text" value="{{ data['email'] }}">
-                                                                    <label for="email">E-Mail Address</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="form-label-group">
-                                                                    <input class="form-control" id="displayName" placeholder="Display Name" maxlength="128" type="text" value="{{ data['displayName'] }}">
-                                                                    <label for="display_name">Display Name</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="custom-control custom-switch">
-                                                                <input class="custom-control-input" id="profile2fa" onchange="show2FAInput()" type="checkbox" {{ 'checked' if data['2fa'] else '' }}>
-                                                                <label class="custom-control-label" for="profile2fa">2FA</label>
-                                                            </div>
-                                                            {% if data['2fa'] %}
-                                                                <div class="my-2" style="display: none;" id="disable2fa">
-                                                                    <div class="form-group">
-                                                                        <div class="form-label-group">
-                                                                            <input class="form-control" id="disable2faToken" placeholder="Token to deactivate 2fa" type="text">
-                                                                            <label for="disable2faToken">Token to deactivate 2fa</label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            {% endif %}
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="form-label-group">
+                                                            <input class="form-control" id="username" placeholder="Username" type="text" value="{{ data['username'] }}" disabled>
+                                                            <label for="username">Username</label>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-label-group">
+                                                            <input class="form-control" id="email"placeholder="E-Mail Address" type="text" value="{{ data['email'] }}">
+                                                            <label for="email">E-Mail Address</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-label-group">
+                                                            <input class="form-control" id="displayName" placeholder="Display Name" maxlength="128" type="text" value="{{ data['displayName'] }}">
+                                                            <label for="display_name">Display Name</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="custom-control custom-switch">
+                                                        <input class="custom-control-input" id="profile2fa" onchange="show2FAInput()" type="checkbox" {{ 'checked' if data['2fa'] else '' }}>
+                                                        <label class="custom-control-label" for="profile2fa">2FA</label>
+                                                    </div>
+                                                    {% if data['2fa'] %}
+                                                        <div class="my-2" style="display: none;" id="disable2fa">
                                                             <div class="form-group">
                                                                 <div class="form-label-group">
-                                                                    <input class="form-control" id="role" name="role" placeholder="Role" type="text" value="{{ data['role']['description'] }}" disabled>
-                                                                    <label for="role">Role</label>
+                                                                    <input class="form-control" id="disable2faToken" placeholder="Token to deactivate 2fa" type="text">
+                                                                    <label for="disable2faToken">Token to deactivate 2fa</label>
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="form-label-group">
-                                                                    <input class="form-control" id="lastLogin" placeholder="Last Login" type="text" value="{{ data['lastLogin'] }}" disabled>
-                                                                    <label for="last_login">Last Login</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <div class="form-label-group">
-                                                                    <input class="form-control" id="created" placeholder="Created" type="text" value="{{ data['created'] }}" disabled>
-                                                                    <label for="created">Created</label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <button class="btn btn-primary float-right" id="modifyProfileBtn">Save</button>
                                                             </div>
                                                         </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <div class="form-label-group">
+                                                            <input class="form-control" id="role" name="role" placeholder="Role" type="text" value="{{ data['role']['description'] }}" disabled>
+                                                            <label for="role">Role</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-label-group">
+                                                            <input class="form-control" id="lastLogin" placeholder="Last Login" type="text" value="{{ data['lastLogin'] }}" disabled>
+                                                            <label for="last_login">Last Login</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="form-label-group">
+                                                            <input class="form-control" id="created" placeholder="Created" type="text" value="{{ data['created'] }}" disabled>
+                                                            <label for="created">Created</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-primary float-right" id="modifyProfileBtn">Save</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -109,29 +105,27 @@
                                     </div><br>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <div class="form-label-group">
-                                                                    <input class="form-control" id="password" name="password"
-                                                                           placeholder="Password" type="password">
-                                                                    <label for="password">Password</label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <div class="form-label-group">
-                                                                    <input class="form-control" id="password2" name="password2"
-                                                                           placeholder="Password (again)" type="password">
-                                                                    <label for="password2">Password (again)</label>
-                                                                </div>
-                                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <div class="form-label-group">
+                                                            <input class="form-control" id="password" name="password"
+                                                                   placeholder="Password" type="password">
+                                                            <label for="password">Password</label>
                                                         </div>
                                                     </div>
-                                                    <button class="btn btn-primary float-right" id="changePasswordBtn">Change Password</button>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="form-group">
+                                                        <div class="form-label-group">
+                                                            <input class="form-control" id="password2" name="password2"
+                                                                   placeholder="Password (again)" type="password">
+                                                            <label for="password2">Password (again)</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button class="btn btn-primary float-right" style="height:50px;" id="changePasswordBtn">Change Password</button>
                                                 </div>
                                             </div>
                                         </div>
