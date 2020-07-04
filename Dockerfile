@@ -1,4 +1,4 @@
-ARG BASE_IMG=pythonflasklogin
+ARG BASE_IMG=nicof2000/pythonflasklogin:build
 FROM ${BASE_IMG}
 
 ENV MYSQL_HOSTNAME=mariadb
