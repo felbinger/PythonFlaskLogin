@@ -41,7 +41,7 @@ def create_app(testing_config=None) -> Flask:
     register_resource(app, RefreshResource, 'refresh_api', '/api/auth/refresh', pk='token', pk_type='string',
                       get=False, get_all=False, put=False)
     register_resource(app, RoleResource, 'role_api', '/api/roles', pk='name', pk_type='string')
-    register_resource(app, UserResource, 'user_api', '/api/users', pk='uuid', pk_type='string')
+    register_resource(app, UserResource, 'user_api', '/api/users', pk='guid', pk_type='string')
     register_resource(app, TOTPResource, 'two_factor_api', '/api/users/2fa', pk=None, get=False, put=False)
 
     # register views

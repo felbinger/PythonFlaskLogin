@@ -39,7 +39,7 @@ def test_create_user(app, client):
         queried_user = User.query.filter_by(username='test').first()
 
         assert isinstance(queried_user, User)
-        assert len(UUID(queried_user.public_id).hex) == 32
+        assert len(UUID(queried_user.guid).hex) == 32
         assert queried_user.displayName == 'Testine Test'
         assert queried_user.email == 'test@test.test'
         assert queried_user.verify_password('password_for_test')

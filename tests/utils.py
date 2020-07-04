@@ -69,9 +69,9 @@ class Utils:
                 refresh_token = json.loads(resp.data.decode()).get('refreshToken')
                 return (access_token, refresh_token) if refresh else access_token
 
-    def get_public_id(self, username='test'):
+    def get_guid(self, username='test'):
         with self.app.app_context():
-            return User.query.filter_by(username=username).first().public_id
+            return User.query.filter_by(username=username).first().guid
 
     def enable_2fa(self, username='test'):
         with self.app.app_context():

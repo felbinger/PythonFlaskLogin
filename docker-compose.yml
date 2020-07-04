@@ -12,6 +12,8 @@ services:
     image: mariadb
     environment:
       - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - '/srv/mariadb/:/var/lib/mysql'
 
   redis:
     image: redis

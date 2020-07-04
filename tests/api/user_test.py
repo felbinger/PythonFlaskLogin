@@ -84,39 +84,39 @@ def test_create_equal_usernames(app, client):
 
 def test_admin_update(app, client):
     utils = Utils(app, client)
-    public_id = utils.get_public_id()
+    guid = utils.get_guid()
 
     data = {'displayName': 'My new display name!'}
     headers = {'Authorization': f'Bearer {utils.generate_admin_access_token()}'}
-    resp = client.put(f'/api/users/{public_id}', headers=headers, json=data)
+    resp = client.put(f'/api/users/{guid}', headers=headers, json=data)
     assert resp.status_code == 200
     assert json.loads(resp.data.decode()).get('data').get('displayName') == data.get('displayName')
 
 
 def test_admin_update_without_data(app, client):
     utils = Utils(app, client)
-    public_id = utils.get_public_id()
+    guid = utils.get_guid()
 
     headers = {'Authorization': f'Bearer {utils.generate_admin_access_token()}'}
-    resp = client.put(f'/api/users/{public_id}', headers=headers)
+    resp = client.put(f'/api/users/{guid}', headers=headers)
     assert resp.status_code == 200
 
 
 def test_admin_update_invalid_data(app, client):
     utils = Utils(app, client)
-    public_id = utils.get_public_id()
+    guid = utils.get_guid()
 
     headers = {'Authorization': f'Bearer {utils.generate_admin_access_token()}'}
-    resp = client.put(f'/api/users/{public_id}', headers=headers, json={'invalid': 'invalid'})
+    resp = client.put(f'/api/users/{guid}', headers=headers, json={'invalid': 'invalid'})
     assert resp.status_code == 400
 
 
 def test_admin_update_non_existing_role(app, client):
     utils = Utils(app, client)
-    public_id = utils.get_public_id()
+    guid = utils.get_guid()
 
     headers = {'Authorization': f'Bearer {utils.generate_admin_access_token()}'}
-    resp = client.put(f'/api/users/{public_id}', headers=headers, json={'role': 'invalid'})
+    resp = client.put(f'/api/users/{guid}', headers=headers, json={'role': 'invalid'})
     assert resp.status_code == 400
     assert json.loads(resp.data.decode()).get('message') == 'Invalid Role'
 
@@ -132,10 +132,10 @@ def test_admin_update_invalid_user(app, client):
 
 def test_admin_update_enable_2fa(app, client):
     utils = Utils(app, client)
-    public_id = utils.get_public_id()
+    guid = utils.get_guid()
 
     headers = {'Authorization': f'Bearer {utils.generate_admin_access_token()}'}
-    resp = client.put(f'/api/users/{public_id}', headers=headers, json={'totp_enabled': True})
+    resp = client.put(f'/api/users/{guid}', headers=headers, json={'totp_enabled': True})
     assert resp.status_code == 400
     assert json.loads(resp.data.decode()).get('message') == 'You are not allowed to enable 2FA.'
 
@@ -143,16 +143,16 @@ def test_admin_update_enable_2fa(app, client):
 def test_admin_update_disable_2fa(app, client):
     utils = Utils(app, client)
     utils.enable_2fa()
-    public_id = utils.get_public_id()
+    guid = utils.get_guid()
 
     headers = {'Authorization': f'Bearer {utils.generate_admin_access_token()}'}
 
     # check if 2fa is enabled
-    resp = client.get(f'/api/users/{public_id}', headers=headers)
+    resp = client.get(f'/api/users/{guid}', headers=headers)
     assert json.loads(resp.data.decode()).get('data').get('2fa')
 
     # disable 2fa
-    resp = client.put(f'/api/users/{public_id}', headers=headers, json={'totp_enabled': False})
+    resp = client.put(f'/api/users/{guid}', headers=headers, json={'totp_enabled': False})
     assert resp.status_code == 200
     assert not json.loads(resp.data.decode()).get('data').get('2fa')
 
@@ -369,9 +369,9 @@ def test_delete(app, client):
     resp = client.post('/api/users', headers=headers, json=data)
     assert resp.status_code == 201
 
-    public_id = utils.get_public_id('new_user')
+    guid = utils.get_guid('new_user')
 
-    resp = client.delete(f'/api/users/{public_id}', headers=headers)
+    resp = client.delete(f'/api/users/{guid}', headers=headers)
     assert resp.status_code == 200
     assert json.loads(resp.data.decode()).get('data') == 'Successfully deleted user!'
 
@@ -393,19 +393,19 @@ def test_delete_invalid_data(app, client):
 
 def test_delete_without_permissions(app, client):
     utils = Utils(app, client)
-    public_id = utils.get_public_id()
+    guid = utils.get_guid()
 
     headers = {'Authorization': f'Bearer {utils.generate_access_token()}'}
-    resp = client.delete(f'/api/users/{public_id}', headers=headers)
+    resp = client.delete(f'/api/users/{guid}', headers=headers)
     assert resp.status_code == 403
     assert json.loads(resp.data.decode()).get('message') == 'Access Denied!'
 
 
 def test_get(app, client):
     utils = Utils(app, client)
-    public_id = utils.get_public_id()
+    guid = utils.get_guid()
     headers = {'Authorization': f'Bearer {utils.generate_admin_access_token()}'}
-    resp = client.get(f'/api/users/{public_id}', headers=headers)
+    resp = client.get(f'/api/users/{guid}', headers=headers)
     assert resp.status_code == 200
     assert json.loads(resp.data.decode()).get('data').get('email') == 'test@example.com'
     assert json.loads(resp.data.decode()).get('data').get('displayName') == 'test'

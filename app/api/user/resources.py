@@ -29,13 +29,13 @@ def random_string(length=16):
 class UserResource(MethodView):
     @require_token
     @require_admin
-    def get(self, uuid: str, **_: dict) -> Union[ResultSchema, ResultErrorSchema]:
-        if uuid is None:
+    def get(self, guid: str, **_: dict) -> Union[ResultSchema, ResultErrorSchema]:
+        if guid is None:
             return ResultSchema(
                 data=[d.jsonify() for d in User.query.all()]
             ).jsonify()
         else:
-            data = User.query.filter_by(public_id=uuid).first()
+            data = User.query.filter_by(guid=guid).first()
             if not data:
                 return ResultErrorSchema(
                     message='User does not exist!',
@@ -88,11 +88,11 @@ class UserResource(MethodView):
         ).jsonify()
 
     @require_token
-    def put(self, uuid: str, user: User, **_: dict) -> Union[ResultSchema, ResultErrorSchema]:
+    def put(self, guid: str, user: User, **_: dict) -> Union[ResultSchema, ResultErrorSchema]:
         """
         Modify an existing user account
         """
-        if uuid == 'me':
+        if guid == 'me':
             schema = DaoUpdateUserSchema()
             data = request.get_json() or {}
             try:
@@ -150,7 +150,7 @@ class UserResource(MethodView):
                 data['2fa_secret'] = totp_secret
             return ResultSchema(data=data).jsonify()
         else:
-            target = User.query.filter_by(public_id=uuid).first()
+            target = User.query.filter_by(guid=guid).first()
             if not target:
                 return ResultErrorSchema(
                     message='User does not exist',
@@ -160,11 +160,11 @@ class UserResource(MethodView):
 
     @require_token
     @require_admin
-    def delete(self, uuid: str, **_: dict):
+    def delete(self, guid: str, **_: dict):
         """
-        Delete an existing account (only with valid public_id not with 'me')
+        Delete an existing account (only with valid guid not with 'me')
         """
-        user = User.query.filter_by(public_id=uuid).first()
+        user = User.query.filter_by(guid=guid).first()
         if not user:
             return ResultErrorSchema(
                 message='User does not exist',

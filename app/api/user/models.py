@@ -11,7 +11,7 @@ from app.utils import db
 class User(db.Model):
     __table_args__ = ({'mysql_character_set': 'utf8mb4', 'mysql_collate': 'utf8mb4_unicode_520_ci'})
     id: int = Column('id', Integer, primary_key=True)
-    public_id: str = Column('publicId', String(36), unique=True, nullable=False)
+    guid: str = Column('guid', String(36), unique=True, nullable=False)
     username: str = Column('username', String(64), unique=True, nullable=False)
     displayName: str = Column('displayName', String(128), unique=True, nullable=True)
     email: str = Column('email', String(64), nullable=False)
@@ -27,11 +27,11 @@ class User(db.Model):
 
     def __init__(self, *args: list, **kwargs: dict) -> "User":
         kwargs['_password']: str = generate_password_hash(kwargs['password'], method='sha512')
-        super().__init__(*args, **kwargs, public_id=str(uuid4()))
+        super().__init__(*args, **kwargs, guid=str(uuid4()))
 
     def jsonify(self) -> dict:
         return {
-            'publicId': self.public_id,
+            'guid': self.guid,
             'username': self.username,
             'displayName': self.displayName if self.displayName else self.username,
             'email': self.email,
