@@ -1,30 +1,24 @@
 version: '3.8'
-services: 
-  app:
-    image: pythonflasklogin:latest
-    ports:
-      - 8080:80
-    environment:
-      - MYSQL_USERNAME=root
-      - MYSQL_PASSWORD=root
+services:
 
   mariadb:
     image: mariadb
     environment:
       - MYSQL_ROOT_PASSWORD=root
-    volumes:
-      - '/srv/mariadb/:/var/lib/mysql'
+      - MYSQL_DATABASE=example
 
   redis:
     image: redis
     command: "redis-server --appendonly yes"
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    ports:
-      - 8081:80
+  app:
+    image: pythonflasklogin:latest
     depends_on:
       - mariadb
+      - redis
+    ports:
+      - 8080:80
     environment:
-      - PMA_HOST=mariadb
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
 

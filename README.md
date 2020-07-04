@@ -25,15 +25,24 @@ This is a flask api example login project which supports multi factor authentica
     chmod +x /usr/local/bin/docker-compose
     ```
    
-3. Start the database (and redis) containers (`docker-compose up -d mariadb redis`)
-
-4. Create the default roles and create a user
+3. Start the services
    ```bash
-   sudo docker-compose exec mariadb mysql -uroot -sNe "INSERT INTO `role` (`id`, `name`, `description`) VALUES (1, 'admin', 'Admin'), (2, 'user', 'User');"
-   sudo docker-compose exec mariadb mysql -uroot -sNe " \
-    INSERT INTO example.user (guid, username, email, role, created, 2fa_enabled, password) VALUES \
-    (\"$(python3 -c 'from uuid import uuid4; print(str(uuid4()))')\", 'user', 'user2@example.com', 1, NOW(), 0, \
-    \"$(python3 -c 'from werkzeug import generate_password_hash; print(generate_password_hash("example"))')\");"
+   # start the database and the redis server
+   sudo docker-compose up -d mariadb redis
+   
+   # the database need some time to initialize... 
+   sleep 30
+   
+   # start the app, this will trigger sqlalchemy to create the tables in the database, afterwards the container is being stopped.
+   sudo docker-compose up -d app
+   
+   # create the default roles and one user
+   sudo docker-compose exec mariadb mysql -uroot -proot -sNe "use example; INSERT INTO role (id, name, description) VALUES (1, 'admin', 'Admin'), (2, 'user', 'User');"
+   sudo docker-compose exec mariadb mysql -uroot -proot -sNe "use example; INSERT INTO example.user (guid, username, email, role, created, 2fa_enabled, password) VALUES (\"$(python3 -c 'from uuid import uuid4; print(str(uuid4()))')\", 'user', 'user2@example.com', 1, NOW(), 0, \"$(python3 -c 'from werkzeug import generate_password_hash; print(generate_password_hash("example"))')\");"
+
+   # now start the app for productive usage
+   sudo docker-compose up -d app
+   
+   # show the status of the docker container
+   sudo docker-compose ps
    ```
- 
-5. Start the application (`sudo docker-compose up -d app`)
