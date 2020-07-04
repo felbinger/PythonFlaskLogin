@@ -22,7 +22,6 @@ class Utils:
                     admin_user = User(
                         username='administrator',
                         email='administrator@example.com',
-                        verified=True,
                         password='password_for_administrator',
                         role=admin_role,
                         totp_enabled=False
@@ -38,7 +37,6 @@ class Utils:
                     normal_user = User(
                         username='test',
                         email='test@example.com',
-                        verified=True,
                         password='password_for_test',
                         role=user_role,
                         totp_enabled=False
@@ -86,7 +84,7 @@ class Utils:
             if user.totp_enabled:
                 return str(onetimepass.get_totp(user.totp_secret))
 
-    def create_user(self, username='random', password='password_for_random', verified=True, role='user'):
+    def create_user(self, username='random', password='password_for_random',  role='user'):
         with self.app.app_context():
             if not User.query.filter_by(username=username).first():
                 _role = Role.query.filter_by(name=role).first()
@@ -99,7 +97,6 @@ class Utils:
                 user = User(
                     username=username,
                     email=f'{username}@example.com',
-                    verified=verified,
                     password=password,
                     role=_role,
                     totp_enabled=False

@@ -28,11 +28,9 @@ def test_create_user(app, client):
             displayName='Testine Test',
             password='password_for_test',
             email='test@test.test',
-            verified=True,
             role=role,
             totp_enabled=False
         )
-
         db.session.add(role)
         db.session.add(user)
         db.session.commit()

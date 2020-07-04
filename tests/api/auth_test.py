@@ -69,14 +69,6 @@ def test_authentication_with_invalid_2fa_token(app, client):
     assert json.loads(resp.data.decode('utf8')).get('message') == 'Invalid credentials'
 
 
-def test_authentication_without_activation(app, client):
-    utils = Utils(app, client)
-    utils.create_user(username='random', password='password_for_random', verified=False)
-    resp = client.post('/api/auth', json={'username': 'random', 'password': 'password_for_random'})
-    assert resp.status_code == 401
-    assert json.loads(resp.data.decode('utf8')).get('message') == 'Account not activated'
-
-
 def test_get_user_info(app, client):
     utils = Utils(app, client)
     resp = client.get('/api/auth', headers={'Authorization': f'Bearer {utils.generate_access_token()}'})
@@ -193,8 +185,8 @@ def test_logout_blacklisted(app, client):
     assert json.loads(resp.data.decode()).get('data') == 'Successfully blacklisted token'
 
     resp = client.delete(f'/api/auth/refresh/{refresh_token}')
-    assert resp.status_code == 401
-    assert json.loads(resp.data.decode()).get('message') == 'Invalid refresh token'
+    assert resp.status_code == 200
+    assert json.loads(resp.data.decode()).get('data') == 'Successfully blacklisted token'
 
 
 # decorator @require_admin before @require_token
