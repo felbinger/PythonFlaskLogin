@@ -1,7 +1,7 @@
 version: '3.8'
 services: 
-  flaskbasic:
-    image: flaskbasic
+  app:
+    image: pythonflasklogin:latest
     ports:
       - 8080:80
     environment:

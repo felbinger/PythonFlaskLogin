@@ -25,15 +25,17 @@ This is a flask api example login project which supports multi factor authentica
     chmod +x /usr/local/bin/docker-compose
     ```
    
-3. Start the database container (`docker-compose up -d mariadb`)
+3. Start the database (and redis) containers (`docker-compose up -d mariadb redis`)
 
 4. Create the default roles and create a user
    ```bash
    sudo docker-compose exec mariadb mysql -uroot -sNe "INSERT INTO `role` (`id`, `name`, `description`) VALUES (1, 'admin', 'Admin'), (2, 'user', 'User');"
-   password=$(python3 -c 'from werkzeug import generate_password_hash; print(generate_password_hash("example"))')
-   sudo docker-compose exec mariadb mysql -uroot -sNe "INSERT INTO `user` (`guid`, `name`, `description`) VALUES (1, 'admin', 'Admin'), (2, 'user', 'User');" 
+   sudo docker-compose exec mariadb mysql -uroot -sNe " \
+    INSERT INTO example.user (guid, username, email, role, created, 2fa_enabled, password) VALUES \
+    (\"$(python3 -c 'from uuid import uuid4; print(str(uuid4()))')\", 'user', 'user2@example.com', 1, NOW(), 0, \
+    \"$(python3 -c 'from werkzeug import generate_password_hash; print(generate_password_hash("example"))')\");"
    ```
-
-6. Change database collection from `latin1_swedish_ci` to `utf8mb4_unicode_ci`
+ 
+5. Start the application (`sudo docker-compose up -d app`)
 
 ### Development Environment
