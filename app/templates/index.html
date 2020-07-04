@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Profile</title>
+        <!-- Font Awesome 5.8.0 -->
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.0/css/all.min.css"
+              integrity="sha256-zuYfqYVhondYLhMhEA58/2PA/prdFq3gT72DxNwSD4M="
+              crossorigin="anonymous"/>
+        <!-- Bootstrap-Toggle -->
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <link href="{{ url_for('static',filename='css/sb-admin.css') }}" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+            <a class="navbar-brand mr-1" href="/">PythonFlaskLogin</a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user-circle fa-fw"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" onclick="logout()">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    <!-- TODO rebuild to render fields -->
+        <div id="wrapper">
+            <div id="content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="offset-lg-1 col-lg-10">
+                            <div class="card mb-3 mx-auto">
+                                <div class="card-header">
+                                    <i class="fas fa-user"></i>
+                                    Profile
+                                </div>
+                                <div class="card-body">
+                                    <div id="statusMsg" class="alert" style="display: none;"></div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="form-label-group">
+                                                                    <input class="form-control" id="username" placeholder="Username" type="text" value="{{ data['username'] }}" disabled>
+                                                                    <label for="username">Username</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="form-label-group">
+                                                                    <input class="form-control" id="email"placeholder="E-Mail Address" type="text" value="{{ data['email'] }}">
+                                                                    <label for="email">E-Mail Address</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="form-label-group">
+                                                                    <input class="form-control" id="displayName" placeholder="Display Name" maxlength="128" type="text" value="{{ data['displayName'] }}">
+                                                                    <label for="display_name">Display Name</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="custom-control custom-switch">
+                                                                <input class="custom-control-input" id="profile2fa" onchange="show2FAInput()" type="checkbox" {{ 'checked' if data['2fa'] else '' }}>
+                                                                <label class="custom-control-label" for="profile2fa">2FA</label>
+                                                            </div>
+                                                            {% if data['2fa'] %}
+                                                                <div class="my-2" style="display: none;" id="disable2fa">
+                                                                    <div class="form-group">
+                                                                        <div class="form-label-group">
+                                                                            <input class="form-control" id="disable2faToken" placeholder="Token to deactivate 2fa" type="text">
+                                                                            <label for="disable2faToken">Token to deactivate 2fa</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="form-label-group">
+                                                                    <input class="form-control" id="role" name="role" placeholder="Role" type="text" value="{{ data['role']['description'] }}" disabled>
+                                                                    <label for="role">Role</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="form-label-group">
+                                                                    <input class="form-control" id="lastLogin" placeholder="Last Login" type="text" value="{{ data['lastLogin'] }}" disabled>
+                                                                    <label for="last_login">Last Login</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="form-label-group">
+                                                                    <input class="form-control" id="created" placeholder="Created" type="text" value="{{ data['created'] }}" disabled>
+                                                                    <label for="created">Created</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <button class="btn btn-primary float-right" id="modifyProfileBtn">Save</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="form-label-group">
+                                                                    <input class="form-control" id="password" name="password"
+                                                                           placeholder="Password" type="password">
+                                                                    <label for="password">Password</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <div class="form-label-group">
+                                                                    <input class="form-control" id="password2" name="password2"
+                                                                           placeholder="Password (again)" type="password">
+                                                                    <label for="password2">Password (again)</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button class="btn btn-primary float-right" id="changePasswordBtn">Change Password</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"
+                integrity="sha256-H3cjtrm/ztDeuhCN9I4yh4iN2Ybx/y1RM7rMmAesA0k="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                integrity="sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw="
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
+        <!-- Axios -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"
+                integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM="
+                crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+        <script>
+            document.getElementById('modifyProfileBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                let displayName = document.getElementById('displayName').value;
+                let email = document.getElementById('email').value;
+                let totp = document.getElementById('profile2fa').checked;
+                // token to deactivate 2fa
+                let totpToken = '';
+                if (document.getElementById('disable2faToken')) {
+                    totpToken = document.getElementById('disable2faToken').value;
+                }
+                if (email.length <= 0) {
+                    setStatusMessage('E-Mail cannot be empty!', 'danger')
+                } else {
+                    modifyProfile(displayName, email, totp, totpToken);
+                }
+            });
+
+            document.getElementById('changePasswordBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                let password = document.getElementById('password').value;
+                let password2 = document.getElementById('password2').value;
+                if (password.length > 0 && password2.length > 0) {
+                    changePassword(password, password2);
+                    document.getElementById('password').value = '';
+                    document.getElementById('password2').value = '';
+                } else {
+                    setStatusMessage('Fill out all fields!', 'danger')
+                }
+            });
+
+            function show2FAInput() {
+                let totpToken = document.getElementById("disable2fa");
+                if (totpToken) {
+                    totpToken.style.display = (document.getElementById("profile2fa").checked) ? 'none' : 'block';
+                }
+            }
+        </script>
+    </body>
+</html>

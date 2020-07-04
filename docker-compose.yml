@@ -1,0 +1,28 @@
+version: '3.8'
+services: 
+  flaskbasic:
+    image: flaskbasic
+    ports:
+      - 8080:80
+    environment:
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=root
+
+  mariadb:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+
+  redis:
+    image: redis
+    command: "redis-server --appendonly yes"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8081:80
+    depends_on:
+      - mariadb
+    environment:
+      - PMA_HOST=mariadb
+

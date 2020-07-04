@@ -1,0 +1,13 @@
+.idea
+__pycache__
+.pytest_cache
+.coverage
+venv
+tests
+.gitignore
+.git
+LICENSE
+README.md
+*Dockerfile
+build.sh
+docker-compose.yml
