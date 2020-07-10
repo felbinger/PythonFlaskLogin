@@ -40,59 +40,58 @@
                                 </div>
                                 <div class="card-body">
                                     <div id="statusMsg" class="alert" style="display: none;"></div>
+                                    <input class="form-control" id="status2fa" placeholder="Username" type="hidden">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <div class="form-label-group">
-                                                            <input class="form-control" id="username" placeholder="Username" type="text" value="{{ data['username'] }}" disabled>
+                                                            <input class="form-control" id="username" placeholder="Username" type="text" disabled>
                                                             <label for="username">Username</label>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="form-label-group">
-                                                            <input class="form-control" id="email"placeholder="E-Mail Address" type="text" value="{{ data['email'] }}">
+                                                            <input class="form-control" id="email"placeholder="E-Mail Address" type="text">
                                                             <label for="email">E-Mail Address</label>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="form-label-group">
-                                                            <input class="form-control" id="displayName" placeholder="Display Name" maxlength="128" type="text" value="{{ data['displayName'] }}">
+                                                            <input class="form-control" id="displayName" placeholder="Display Name" maxlength="128" type="text">
                                                             <label for="display_name">Display Name</label>
                                                         </div>
                                                     </div>
                                                     <div class="custom-control custom-switch">
-                                                        <input class="custom-control-input" id="profile2fa" onchange="show2FAInput()" type="checkbox" {{ 'checked' if data['2fa'] else '' }}>
+                                                        <input class="custom-control-input" id="profile2fa" onchange="show2FAInput()" type="checkbox">
                                                         <label class="custom-control-label" for="profile2fa">2FA</label>
                                                     </div>
-                                                    {% if data['2fa'] %}
-                                                        <div class="my-2" style="display: none;" id="disable2fa">
-                                                            <div class="form-group">
-                                                                <div class="form-label-group">
-                                                                    <input class="form-control" id="disable2faToken" placeholder="Token to deactivate 2fa" type="text">
-                                                                    <label for="disable2faToken">Token to deactivate 2fa</label>
-                                                                </div>
+                                                    <div class="my-2" style="display: none;" id="disable2fa">
+                                                        <div class="form-group">
+                                                            <div class="form-label-group">
+                                                                <input class="form-control" id="disable2faToken" placeholder="Token to deactivate 2fa" type="text">
+                                                                <label for="disable2faToken">Token to deactivate 2fa</label>
                                                             </div>
                                                         </div>
-                                                    {% endif %}
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <div class="form-label-group">
-                                                            <input class="form-control" id="role" name="role" placeholder="Role" type="text" value="{{ data['role']['description'] }}" disabled>
+                                                            <input class="form-control" id="role" name="role" placeholder="Role" type="text" disabled>
                                                             <label for="role">Role</label>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="form-label-group">
-                                                            <input class="form-control" id="lastLogin" placeholder="Last Login" type="text" value="{{ data['lastLogin'] }}" disabled>
+                                                            <input class="form-control" id="lastLogin" placeholder="Last Login" type="text" disabled>
                                                             <label for="last_login">Last Login</label>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="form-label-group">
-                                                            <input class="form-control" id="created" placeholder="Created" type="text" value="{{ data['created'] }}" disabled>
+                                                            <input class="form-control" id="created" placeholder="Created" type="text" disabled>
                                                             <label for="created">Created</label>
                                                         </div>
                                                     </div>
@@ -152,43 +151,78 @@
                 integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM="
                 crossorigin="anonymous"></script>
         <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
-        <script>
-            document.getElementById('modifyProfileBtn').addEventListener('click', (e) => {
-                e.preventDefault();
-                let displayName = document.getElementById('displayName').value;
-                let email = document.getElementById('email').value;
-                let totp = document.getElementById('profile2fa').checked;
-                // token to deactivate 2fa
-                let totpToken = '';
-                if (document.getElementById('disable2faToken')) {
-                    totpToken = document.getElementById('disable2faToken').value;
-                }
-                if (email.length <= 0) {
-                    setStatusMessage('E-Mail cannot be empty!', 'danger')
-                } else {
-                    modifyProfile(displayName, email, totp, totpToken);
-                }
-            });
-
-            document.getElementById('changePasswordBtn').addEventListener('click', (e) => {
-                e.preventDefault();
-                let password = document.getElementById('password').value;
-                let password2 = document.getElementById('password2').value;
-                if (password.length > 0 && password2.length > 0) {
-                    changePassword(password, password2);
-                    document.getElementById('password').value = '';
-                    document.getElementById('password2').value = '';
-                } else {
-                    setStatusMessage('Fill out all fields!', 'danger')
-                }
-            });
-
-            function show2FAInput() {
-                let totpToken = document.getElementById("disable2fa");
-                if (totpToken) {
-                    totpToken.style.display = (document.getElementById("profile2fa").checked) ? 'none' : 'block';
-                }
-            }
-        </script>
+        <script src="{{ url_for('static',filename='js/profile.js') }}"></script>
+        <script src="{{ url_for('static',filename='js/login.js') }}"></script>
     </body>
 </html>
+
+
+
+
+
+<script>
+    document.getElementById('modifyProfileBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        let displayName = document.getElementById('displayName').value;
+        let email = document.getElementById('email').value;
+        let totp = document.getElementById('profile2fa').checked;
+        // token to deactivate 2fa
+        let totpToken = '';
+        if (document.getElementById('disable2faToken')) {
+            totpToken = document.getElementById('disable2faToken').value;
+        }
+        if (email.length <= 0) {
+            setStatusMessage('E-Mail cannot be empty!', 'danger')
+        } else {
+            modifyProfile(displayName, email, totp, totpToken);
+        }
+    });
+
+    document.getElementById('changePasswordBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        let password = document.getElementById('password').value;
+        let password2 = document.getElementById('password2').value;
+        if (password.length > 0 && password2.length > 0) {
+            changePassword(password, password2);
+            document.getElementById('password').value = '';
+            document.getElementById('password2').value = '';
+        } else {
+            setStatusMessage('Fill out all fields!', 'danger')
+        }
+    });
+
+    function show2FAInput() {
+        if (document.getElementById('status2fa').value === "false") {
+            return;
+        }
+        let totpToken = document.getElementById("disable2fa");
+        if (totpToken) {
+            totpToken.style.display = (document.getElementById("profile2fa").checked) ? 'none' : 'block';
+        }
+    }
+
+    async function load() {
+        const response = await fetch('/api/auth', {
+            headers: {
+                'Authorization': `Bearer ${getCookie('accessToken')}`
+            }
+        });
+
+        const data = await response.json()
+
+        if (!response.ok) {
+            console.log(response, data);
+        }
+
+        document.getElementById('username').value = data.data.username;
+        document.getElementById('role').value = data.data.role.description;
+        document.getElementById('email').value = data.data.email;
+        document.getElementById('lastLogin').value = new Date(data.data.lastLogin).toDateString();
+        document.getElementById('displayName').value = data.data.displayName; // {{ date_format }}
+        document.getElementById('created').value = new Date(data.data.created).toDateString(); // {{ date_format }}
+        document.getElementById('profile2fa').checked = data.data['2fa'];
+        document.getElementById('status2fa').value = data.data['2fa'];
+    }
+    load();
+
+</script>
