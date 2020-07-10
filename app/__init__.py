@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask
 from flask_cors import CORS
 
 from app.api import (
@@ -7,6 +7,7 @@ from app.api import (
 )
 from app.utils import db, RedisBlacklist
 from app.config import ProductionConfig, DevelopmentConfig
+from app.views import default
 
 
 def create_app(testing_config=None) -> Flask:
@@ -44,21 +45,7 @@ def create_app(testing_config=None) -> Flask:
     register_resource(app, TOTPResource, 'two_factor_api', '/api/users/2fa', pk=None, get=False, put=False)
 
     # register views
-    @app.route('/login')
-    def login():
-        return render_template('login.html')
-
-    @app.route('/')
-    def profile():
-        return render_template('index.html', date_format=app.config['DATE_FORMAT'])
-
-    @app.route('/2fa')
-    def enable2fa():
-        return render_template('setup2FA.html'), {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-        }
+    app.register_blueprint(default)
 
     return app
 
