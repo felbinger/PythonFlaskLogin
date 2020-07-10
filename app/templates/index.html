@@ -27,7 +27,6 @@
                 </li>
             </ul>
         </nav>
-    <!-- TODO rebuild to render fields -->
         <div id="wrapper">
             <div id="content-wrapper">
                 <div class="container-fluid">
@@ -146,10 +145,6 @@
                 integrity="sha256-fzFFyH01cBVPYzl16KT40wqjhgPtq6FFUB6ckN2+GGw="
                 crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
-        <!-- Axios -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"
-                integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM="
-                crossorigin="anonymous"></script>
         <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
         <script src="{{ url_for('static',filename='js/profile.js') }}"></script>
         <script src="{{ url_for('static',filename='js/login.js') }}"></script>
@@ -218,8 +213,8 @@
         document.getElementById('role').value = data.data.role.description;
         document.getElementById('email').value = data.data.email;
         document.getElementById('lastLogin').value = new Date(data.data.lastLogin).toDateString();
-        document.getElementById('displayName').value = data.data.displayName; // {{ date_format }}
-        document.getElementById('created').value = new Date(data.data.created).toDateString(); // {{ date_format }}
+        document.getElementById('displayName').value = data.data.displayName; // TODO implement {{ date_format }}
+        document.getElementById('created').value = new Date(data.data.created).toDateString(); // TODO implement  {{ date_format }}
         document.getElementById('profile2fa').checked = data.data['2fa'];
         document.getElementById('status2fa').value = data.data['2fa'];
     }
