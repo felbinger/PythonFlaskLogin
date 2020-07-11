@@ -34,7 +34,7 @@ class ProductionConfig(Config):
 
 
 class DevelopmentConfig(Config):
-    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://root@localhost:3306/example?charset=utf8mb4'
+    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://root:root@localhost:3306/example?charset=utf8mb4'
     DEBUG = True
 
 
