@@ -77,7 +77,7 @@ async function login(username, password, token, tokenField) {
         token.value = '';
     }
 
-    // set tokens as cookie
+    // set tokens as cookie - TODO time til expiration should be configureable from app/config.py
     setCookie('accessToken', data.accessToken, 15);
     setCookie('refreshToken', data.refreshToken, 360);
 

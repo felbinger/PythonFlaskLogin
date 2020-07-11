@@ -54,6 +54,11 @@
         <script src="{{ url_for('static',filename='js/utils.js') }}"></script>
         <script src="{{ url_for('static',filename='js/2fa.js') }}"></script>
         <script>
+            // return to profile page, if 2fa setup is not prepared
+            if (!getCookie('2faSecret')) {
+                window.location = '/'
+            }
+
             document.getElementById('secret').innerText = getCookie('2faSecret');
 
             // get qr code
