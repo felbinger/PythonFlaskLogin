@@ -151,6 +151,12 @@
         <script src="{{ url_for('static',filename='js/strftime.js') }}"></script>
     </body>
     <script>
+
+        // redirect to login page, if user is not logged in
+        if (!getCookie('accessToken')) {
+            window.location = '/login';
+        }
+
         document.getElementById('modifyProfileBtn').addEventListener('click', (e) => {
             e.preventDefault();
             let displayName = document.getElementById('displayName').value;
