@@ -46,7 +46,11 @@ This is a flask api example login project which supports multi factor authentica
      python3 -c "from werkzeug import generate_password_hash; print(generate_password_hash(\"$1\"))"
    }
    function gen_uuid {
-     python3 -c 'from uuid import uuid4; print(str(uuid4()))'
+     if [[ -n $(which uuidgen) ]]; then
+       uuidgen
+     else
+       python3 -c 'from uuid import uuid4; print(str(uuid4()))'
+     fi
    }
    
    # create the default roles and one user
