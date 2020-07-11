@@ -50,8 +50,11 @@ This is a flask api example login project which supports multi factor authentica
    }
    
    # create the default roles and one user
-   sudo docker-compose exec mariadb mysql -uroot -proot -sNe "INSERT INTO example.role (id, name, description) VALUES (1, 'admin', 'Admin'), (2, 'user', 'User');"
-   sudo docker-compose exec mariadb mysql -uroot -proot -sNe "INSERT INTO example.user (guid, username, email, role, created, 2fa_enabled, password) VALUES (\"$(gen_uuid)\", 'user', 'user2@example.com', 1, NOW(), 0, \"$(hash 'example')\");"
+   sql="INSERT INTO example.role (id, name, description) VALUES (1, 'admin', 'Admin'), (2, 'user', 'User');"
+   sudo docker-compose exec mariadb mysql -uroot -proot -sNe $sql
+   sql="INSERT INTO example.user (guid, username, email, role, created, 2fa_enabled, password) \
+    VALUES (\"$(gen_uuid)\", 'user', 'user2@example.com', 1, NOW(), 0, \"$(hash 'example')\");"
+   sudo docker-compose exec mariadb mysql -uroot -proot -sNe $sql
 
    # now start the app for productive usage
    sudo docker-compose up -d app
